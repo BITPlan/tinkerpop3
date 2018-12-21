@@ -37,9 +37,15 @@ import com.bigdata.rdf.model.BigdataValue;
  */
 public class Tinkerpop3ExtensionFactory extends DefaultExtensionFactory {
 
+  /**
+   * initialize the extension factory
+   * @param resolver
+   * @param lex
+   * @param extensions
+   */
     protected void _init(final IDatatypeURIResolver resolver,
             final ILexiconConfiguration<BigdataValue> lex,
-            final Collection<IExtension> extensions) {
+            final Collection<IExtension<? extends BigdataValue>> extensions) {
         
         /*
          * Add ListIndexExtension for Cardinality.list.
