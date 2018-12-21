@@ -29,7 +29,7 @@ import org.junit.runners.Suite;
 @Suite.SuiteClasses({ TestBasicOperations.class, TestBulkLoad.class,
     TestHistory.class,TestSearch.class, SampleCode.class
     // uncomment to run full testsuite with some 810 tests
-    // BlazeGraphStructureStandardTest.class 
+    ,BlazeGraphStructureStandardTest.class 
     })
 /**
  * run test as a suite 
