@@ -23,6 +23,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 package com.blazegraph.gremlin.embedded;
 
 import com.bigdata.rdf.sail.BigdataSailRepository;
+import org.apache.commons.configuration.Configuration;
 
 /**
  * Helper class for the gremlin console.
@@ -36,4 +37,8 @@ public class BlazeGraphFactory {
         return BlazeGraphEmbedded.open(repo);
     }
 
+    public static final BlazeGraphEmbedded open(final Configuration configuration) {
+        String journal = configuration.getString("journal");
+        return BlazeGraphFactory.open(journal);
+    }
 }
