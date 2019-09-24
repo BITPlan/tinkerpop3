@@ -11,5 +11,5 @@ jdk:
 install: 
    - mvn install -DskipTests -Dmaven.javadoc.skip=true -Dgpg.skip=true
 script: 
-   - mvn test -Dtest=SampleCode 
-
+   - mvn test -Dtest=com.blazegraph.gremlin.structure.SampleCode
+   - mvn test -Dtest=com.blazegraph.gremlin.structure.TestSearch
