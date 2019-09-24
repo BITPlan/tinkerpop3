@@ -93,7 +93,8 @@ public class StructureStandardSuite extends AbstractGremlinSuite {
             DetachedVertexTest.class,
             EdgeTest.class,
             FeatureSupportTest.class,
-            GraphTest.class,
+            // takes 5 min to test
+            // GraphTest.class,
             GraphConstructionTest.class,
             ModifiedVertexPropertyTest.class,
             VariablesTest.class,
@@ -106,8 +107,9 @@ public class StructureStandardSuite extends AbstractGremlinSuite {
             ModifiedStarGraphTest.class,
             VertexTest.class,
             ModifiedTransactionTest.class,
-            CommunityGeneratorTest.class,
-            DistributionGeneratorTest.class,
+            // takes over 1/2 hour to test
+            // CommunityGeneratorTest.class,
+            // DistributionGeneratorTest.class,
             IoCustomTest.class,
             IoEdgeTest.class,
             IoGraphTest.class,
