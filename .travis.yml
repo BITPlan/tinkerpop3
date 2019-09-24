@@ -1,12 +1,15 @@
 # this is a java project using maven
 language: java
 jdk:
-  - oraclejdk8
-  - oraclejdk9
+# oracle jdk8 and jdk9 does not work on default dist
+#  - oraclejdk8
+#  - oraclejdk9
   - oraclejdk11
   - openjdk8
   - openjdk-ea
-# switch off gpg handling and javadoc
-#install: mvn install -Dmaven.javadoc.skip=true -Dgpg.skip=true
-install: mvn install -Dtest=SampleCode -Dmaven.javadoc.skip=true -Dgpg.skip=true
+# switch off gpg handling, javadoc and tests
+install: 
+   - mvn install -DskipTests -Dmaven.javadoc.skip=true -Dgpg.skip=true
+script: 
+   - mvn test -Dtest=SampleCode 
 
