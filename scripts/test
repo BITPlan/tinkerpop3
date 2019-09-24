@@ -3,7 +3,7 @@ LC_NUMERIC="en_US.UTF-8"
 TIMES=()
 PACKAGES=()
 mvn clean install -DskipTests -Dmaven.javadoc.skip=true -Dgpg.skip=true
-for package in TestBasicOperations TestBulkLoad TestHistory TestSearch SampleCode TestSearch
+for package in TestBasicOperations TestBulkLoad TestHistory TestListeners TestSearch SampleCode TestSearch
 do
   START=$(date +%s.%N)
   mvn test -Dtest=com.blazegraph.gremlin.structure.$package
