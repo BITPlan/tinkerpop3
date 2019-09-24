@@ -1,11 +1,20 @@
 # Blazegraph TinkerPop3 Implementation (blazegraph-gremlin)
 
 [![Travis (.org)](https://img.shields.io/travis/BITPlan/tinkerpop3)](https://travis-ci.org/BITPlan/tinkerpop3)
+[![GitHub](https://img.shields.io/github/license/BITPlan/tinkerpop3.svg)](https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html)
 [![BITPlan](http://wiki.bitplan.com/images/wiki/thumb/3/38/BITPlanLogoFontLessTransparent.png/198px-BITPlanLogoFontLessTransparent.png)](http://www.bitplan.com)
 
 This is a fork of Blazegraph Tinkerpop trying to support more recent versions of Apache Tinkerpop.
 
 ![Blazegraph TinkerPop Logo](images/blazegraph-gremlin.png)
+
+# Version History
+| Version | date       |  changes
+| ------: | ---------- | ------------------------
+|   1.0.0 | 2016       | Migration of classes and tests (not working yet)
+|   1.0.1 | 2018-12    | upgrading to Tinkerpop 3.2.10
+|   1.0.2 | 2019-09-24 | upgrading to Tinkerpop 3.2.11
+
 
 Welcome to the [Blazegraph](https://www.blazegraph.com)/[TinkerPop3](http://tinkerpop.incubator.apache.org/) project.  The TP3 implementation has some significant differences from the TP2 version.  The data model has been changed to use RDF*, an RDF reification framework described [here](https://wiki.blazegraph.com/wiki/index.php/Reification_Done_Right).
 
