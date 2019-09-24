@@ -7,4 +7,6 @@ jdk:
   - openjdk8
   - openjdk-ea
 # switch off gpg handling and javadoc
-install: mvn install -Dmaven.javadoc.skip=true -Dgpg.skip=true
+#install: mvn install -Dmaven.javadoc.skip=true -Dgpg.skip=true
+install: mvn install -Dtest=SampleCode -Dmaven.javadoc.skip=true -Dgpg.skip=true
+
