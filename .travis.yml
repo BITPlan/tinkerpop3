@@ -8,8 +8,11 @@ jdk:
   - openjdk8
   - openjdk-ea
 # switch off gpg handling, javadoc and tests
-install: 
+install:
    - mvn install -DskipTests -Dmaven.javadoc.skip=true -Dgpg.skip=true
 script: 
-   - mvn test -Dtest=com.blazegraph.gremlin.structure.SampleCode
+   - mvn test -Dtest=com.blazegraph.gremlin.structure.TestBasicOperations
+   - mvn test -Dtest=com.blazegraph.gremlin.structure.TestBulkLoad
+   - mvn test -Dtest=com.blazegraph.gremlin.structure.TestHistory
    - mvn test -Dtest=com.blazegraph.gremlin.structure.TestSearch
+   - mvn test -Dtest=com.blazegraph.gremlin.structure.SampleCode
