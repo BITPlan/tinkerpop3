@@ -1,0 +1,10 @@
+# this is a java project using maven
+language: java
+jdk:
+  - oraclejdk8
+  - oraclejdk9
+  - oraclejdk11
+  - openjdk8
+  - openjdk-ea
+# switch off gpg handling and javadoc
+install: mvn install -Dmaven.javadoc.skip=true -Dgpg.skip=true
