@@ -11,7 +11,7 @@ This is a fork of Blazegraph Tinkerpop trying to support more recent versions of
 # Version History
 | Version | date       |  changes
 | ------: | ---------- | ------------------------
-|   1.0.0 | 2016       | Migration of classes and tests (not working yet)
+|   1.0.0 | 2016       | original fork
 |   1.0.1 | 2018-12    | upgrading to Tinkerpop 3.2.10
 |   1.0.2 | 2019-09-24 | upgrading to Tinkerpop 3.2.11
 
