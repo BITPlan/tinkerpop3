@@ -1,5 +1,9 @@
 # Blazegraph TinkerPop3 Implementation (blazegraph-gremlin)
-=======
+
+[![Travis (.org)](https://img.shields.io/travis/BITPlan/tinkerpop3)](https://travis-ci.org/BITPlan/tinkerpop3)
+[![BITPlan](http://wiki.bitplan.com/images/wiki/thumb/3/38/BITPlanLogoFontLessTransparent.png/198px-BITPlanLogoFontLessTransparent.png)](http://www.bitplan.com)
+
+This is a fork of Blazegraph Tinkerpop trying to support more recent versions of Apache Tinkerpop.
 
 ![Blazegraph TinkerPop Logo](images/blazegraph-gremlin.png)
 
@@ -40,7 +44,7 @@ To build blazegraph-gremlin:
 To import blazegraph-gremlin into Eclipse:
 
     > mvn eclipse:eclipse
-    
+
 Then select "File-Import-Existing Projects Into Workspace" from the Eclipse menu and select the root directory of this project.
 
 Continue reading this document and take a look at SampleCode.java provided in blazegraph-gremlin/src/test for information on how to get started writing your TP3 application with Blazegraph.
@@ -56,7 +60,7 @@ Once you restart the console, activate the blazegraph-gremlin plugin:
 
 	gremlin> :plugin use tinkerpop.blazegraph
 	==>tinkerpop.blazegraph activated
-	
+
 You can then open a BlazeGraph instance by specifying the location you would like to use for the persistent journal file:
 
 	gremlin> g = BlazeGraphFactory.open("/tmp/blazegraph.jnl")
@@ -66,7 +70,7 @@ You can then open a BlazeGraph instance by specifying the location you would lik
                        Reliable
                       Affordable
           Web-Scale Computing for the Enterprise
-          
+
     Copyright SYSTAP, LLC DBA Blazegraph 2006-2016.  All rights reserved.
     ==>blazegraphembedded[vertices:0 edges:0]
 
@@ -75,10 +79,10 @@ You can then open a BlazeGraph instance by specifying the location you would lik
 It's important to understand how Blazegraph organizes property graph data as RDF.  Blazegraph uses the RDF* framework, which is an extension to RDF that provides for an easier RDF reification syntax.  Reification is a means of using an RDF statement as an RDF value in other statements.  The RDF* syntax for an RDF "statement as a value" is as follows:
 
 	# statement
-	:john :knows :mary . 
+	:john :knows :mary .
 	# "statement as value"
 	<<:john :knows :mary>> dc:source <http://johnknowsmary.com> .
-	
+
 Blazegraph uses the OpenRDF SAIL API and represents RDF* reified statements as bnodes in that API.  This is important for understanding how to write SPARQL queries against TP3 graphs and how to interpret query results.
 
 Property graph values must be converted into RDF values and vice versa.  Blazegraph provides a BlazeValueFactory interface with a default implementation.  You can extend this interface and provide your own value factory if you prefer a custom look for the RDF values in your property graph.  
@@ -91,11 +95,11 @@ Property graph elements are represented as follows in Blazegraph:
 
 	# BlazeVertex john = graph.addVertex(T.id, "john", T.label, "person");
 	blaze:john rdf:type blaze:person .
-	
+
 	# BlazeEdge knows = graph.addEdge(john, mary, "knows", T.id, "k01");
 	blaze:john blaze:k01 blaze:mary .
 	<<blaze:john blaze:k01 blaze:mary>> rdf:type blaze:knows .
-	
+
 Vertices requires one statement, edges require two.
 
 Edge properties are simply attached to the reified edge statement:
@@ -106,18 +110,18 @@ Edge properties are simply attached to the reified edge statement:
 Representation of vertex properties depends on the cardinality of the key.  Cardinality.single and .set look the same, .list is represented differently.  Vertices can mix and match cardinalities for different keys.  All three cardinalities are supported, but Cardinality.set is the one most closely aligned with RDF and as such will provide the best performance of the three.  User supplied ids are NOT supported for vertex properties.
 
 Cardinality.set and Cardinality.single are modeled the same way:
-	
+
 	# VertexProperty set = john.property(Cardinality.set, "age", 25, "acl", "public");
 	blaze:john blaze:age "25"^^xsd:int .
 	<<blaze:john blaze:age "25"^^xsd:int>> blaze:acl "public" .
-	
+
 Cardinality.list is modeled differently:
-	
+
 	# VertexProperty list = john.property(Cardinality.list, "city", "salt lake city", "acl", "public");
 	blaze:john blaze:city "12765"^^bg:listIndex .
 	<<blaze:john blaze:city "12765"^^bg:listIndex>> rdf:value "salt lake city" .
 	<<blaze:john blaze:city "12765"^^bg:listIndex>> blaze:acl "public" .
-	
+
 Cardinality.list uses a specially datatyped and monotonically increasing internal identifier to represent the vertex property (the actual datatype is `<http://www.blazegraph.com/rdf/datatype#listIndex>`).  This identifier serves to manage duplicate list values and ordering of list items.  It's important to note this difference as different cardinalities will require different SPARQL queries.
 
 #### Putting it all together: The Crew
@@ -126,13 +130,13 @@ Here is how the TinkerPop3 "Crew" dataset looks when loaded into Blazegraph.  Hu
 
     blaze:tinkergraph rdf:type blaze:software ;
                       blaze:name "tinkergraph" .
-                
+
     blaze:gremlin rdf:type blaze:software ;
                   blaze:name "gremlin" ;
                   blaze:48f63 blaze:tinkergraph .
-                
+
     <<blaze:gremlin blaze:48f63 blaze:tinkergraph>> rdf:type blaze:traverses .                
-                
+
     blaze:daniel rdf:type blaze:person ;
                  blaze:name "daniel" ;
                  blaze:81056 blaze:tinkergraph ;
@@ -140,7 +144,7 @@ Here is how the TinkerPop3 "Crew" dataset looks when loaded into Blazegraph.  Hu
                  blaze:location "spremberg" ;
                  blaze:location "kaiserslautern" ;
                  blaze:location "aachen" .
-                
+
     <<blaze:daniel blaze:81056 blaze:tinkergraph>>   rdf:type blaze:uses ;
                                                      blaze:skill "3"^^xsd:int .
     <<blaze:daniel blaze:e09ac blaze:gremlin>>       rdf:type blaze:uses ;
@@ -150,7 +154,7 @@ Here is how the TinkerPop3 "Crew" dataset looks when loaded into Blazegraph.  Hu
     <<blaze:daniel blaze:location "kaiserslautern">> blaze:startTime "2005"^^xsd:int ;
                                                      blaze:endTime "2009"^^xsd:int .
     <<blaze:daniel blaze:location "aachen">>         blaze:startTime "2009"^^xsd:int .
-                
+
     blaze:marko rdf:type blaze:person ;
                 blaze:name "marko" ;
                 blaze:42af2 blaze:gremlin ;
@@ -177,7 +181,7 @@ Here is how the TinkerPop3 "Crew" dataset looks when loaded into Blazegraph.  Hu
     <<blaze:marko blaze:location "brussels">>     blaze:startTime "2004"^^xsd:int ;
                                                   blaze:endTime "2005"^^xsd:int .
     <<blaze:marko blaze:location "santa fe">>     blaze:startTime "2005"^^xsd:int .
-    
+
     blaze:stephen rdf:type blaze:person ;
                   blaze:name "stephen" ;
                   blaze:15869 blaze:tinkergraph ;
@@ -201,7 +205,7 @@ Here is how the TinkerPop3 "Crew" dataset looks when loaded into Blazegraph.  Hu
     <<blaze:stephen blaze:location "dulles">>       blaze:startTime "2000"^^xsd:int ;
                                                     blaze:endTime "2006"^^xsd:int .
     <<blaze:stephen blaze:location "purcellville">> blaze:startTime "2006"^^xsd:int .
-    
+
     blaze:matthias rdf:type blaze:person ;
                 blaze:name "matthias" ;
                 blaze:7373e blaze:gremlin ;
@@ -211,7 +215,7 @@ Here is how the TinkerPop3 "Crew" dataset looks when loaded into Blazegraph.  Hu
                 blaze:location "baltimore" ;
                 blaze:location "oakland" ;
                 blaze:location "seattle" .
-    
+
     <<blaze:matthias blaze:7373e blaze:gremlin>>     rdf:type blaze:develops ;
                                                      blaze:since "2012"^^xsd:int .
     <<blaze:matthias blaze:e5a5d blaze:gremlin>>     rdf:type blaze:uses ;
@@ -225,7 +229,7 @@ Here is how the TinkerPop3 "Crew" dataset looks when loaded into Blazegraph.  Hu
     <<blaze:matthias blaze:location "oakland">>      blaze:startTime "2011"^^xsd:int ;
                                                      blaze:endTime "2014"^^xsd:int .
     <<blaze:matthias blaze:location "seattle">>      blaze:startTime "2014"^^xsd:int .
-        
+
 ## Getting up and running with Blazegraph/TP3
 
 Currently **BlazeGraphEmbedded** is the only concrete implementation of the Blazegraph TinkerPop3 API.  BlazeGraphEmbedded is backed by an embedded (same JVM) instance of Blazegraph.  This puts the enterprise features of Blazegraph (high-availability, scale-out, etc.) out of reach for the 1.0 version of the TP3 integration, since those features are accessed via Blazegraph's client/server API.  A TP3 integration with the client/server version of Blazegraph is reserved for a future blazegraph-tinkerpop release.
@@ -233,24 +237,24 @@ Currently **BlazeGraphEmbedded** is the only concrete implementation of the Blaz
 BlazeGraphEmbedded is instantiated by providing an open and initialized Blazegraph RDF repository (OpenRDF SAIL).  There a numerous resources available at [blazegraph.com](http://wiki.blazegraph.com) on how to configure a Blazegraph SAIL, however blazegraph-gremlin comes with a quick start factory that will allow you to get up and running with Blazegraph with a reasonable set of defaults for the TinkerPop3 API.  BasicRepositoryProvider in blazegraph-gremlin/src/main allows you to create or open an RDF repository backed by a persistent journal file at a specified location.  This RDF repository can then be used to open a BlazeGraphEmbedded instance:
 
     /*
-     * A journal file is the persistence mechanism for an embedded 
+     * A journal file is the persistence mechanism for an embedded
      * Blazegraph instance.
      */
     String journal = file.getAbsolutePath();
-    
+
     /*
      * BasicRepositoryProvider will create a Blazegraph repository using the
      * specified journal file with a reasonable default configuration set
      * for the TinkerPop3 API. This will also open a previously created
      * repository if the specified journal already exists.
-     * 
+     *
      * ("Bigdata" is the legacy product name for Blazegraph).
-     * 
-     * See BasicRepositoryProvider for more details on the default SAIL 
+     *
+     * See BasicRepositoryProvider for more details on the default SAIL
      * configuration.
      */
     BigdataSailRepository repo = BasicRepositoryProvider.open(journal);
-    
+
     /*
      * Open a BlazeGraphEmbedded instance with no additional configuration.
      * See BlazeGraphEmbedded.Options for additional configuration options.
@@ -280,7 +284,7 @@ The bulk load API can be used in several ways:
     final TinkerGraph theCrew = TinkerFactory.createTheCrew();
     graph.bulkLoad(theCrew);
     graph.tx().commit();
-    
+
     /*
      * Execute a code block in bulk load mode.
      */
@@ -289,18 +293,18 @@ The bulk load API can be used in several ways:
         graph.addVertex(T.id, "b");
     });
     graph.tx().commit();
-    
+
     /*
-     * Manually set and reset bulk load mode. 
+     * Manually set and reset bulk load mode.
      */
     graph.setBulkLoad(true);
     graph.addVertex(T.id, "c");
     graph.addVertex(T.id, "d");
     graph.setBulkLoad(false);
     graph.tx().commit();
-    
-Be careful not to introduce consistency errors while in bulk load mode. 
-     
+
+Be careful not to introduce consistency errors while in bulk load mode.
+
     graph.bulkLoad(() -> {
         final BlazeVertex e = graph.addVertex(T.id, "e", T.label, "foo");
         e.property(Cardinality.single, "someKey", "v1");
@@ -310,7 +314,7 @@ Be careful not to introduce consistency errors while in bulk load mode.
          * resulting in two values for Cardinality.single.
          */
         assertEquals(2, e.properties("someKey").count());
-        
+
         graph.addVertex(T.id, "e", T.label, "bar");
         /*
          * Consistency error - we've created a new vertex with the same id
@@ -336,7 +340,7 @@ The search API lets you use Blazegraph's built-in full text index to perform Luc
         v.property(Cardinality.set, "key", "hello bar foo");
     });
     graph.tx().commit();
-    
+
     // all four vertex properties contain "foo" or "bar"
     assertEquals(4, graph.search("foo bar", Match.ANY).count());
     // three contain "foo"
@@ -347,7 +351,7 @@ The search API lets you use Blazegraph's built-in full text index to perform Luc
     assertEquals(2, graph.search("foo bar", Match.ALL).count());
     // and only one contains exactly "foo bar"
     assertEquals(1, graph.search("foo bar", Match.EXACT).count());
-    
+
     // prefix match
     assertEquals(4, graph.search("hell*", Match.ANY).count());
 
@@ -360,34 +364,34 @@ The listener API look as follows:
 
     @FunctionalInterface
     public interface BlazeGraphListener {
-    
+
         /**
          * Notification of an edit to the graph.
-         * 
+         *
          * @param edit
          *          the {@link BlazeGraphEdit}
          * @param raw
          *          toString() version of the raw RDF mutation
          */
         void graphEdited(BlazeGraphEdit edit, String rdfEdit);
-    
+
         /**
          * Notification of a transaction committed.
-         * 
+         *
          * @param commitTime
          *          the timestamp on the commit
          */
         default void transactionCommited(long commitTime) {
             // noop default impl
         }
-    
+
         /**
          * Notification of a transaction abort.
          */
         default void transactionAborted() {
             // noop default impl
         }
-        
+
     }
 
 Sample usage of this API can be found in SampleCode.demonstrateListenerAPI().
@@ -403,19 +407,19 @@ Sample usage of this API can be found in SampleCode.demonstrateHistoryAPI(), whi
      */
     final BlazeVertex a = graph.addVertex(T.id, "a");
     graph.tx().commit();
-    
+
     /*
      * Add a property.
      */
     a.property(Cardinality.single, "key", "foo");
     graph.tx().commit();
-    
+
     /*
      * Change the value.
      */
     a.property(Cardinality.single, "key", "bar");
     graph.tx().commit();
-    
+
     /*
      * Remove the vertex.
      */
@@ -467,9 +471,9 @@ Sample usage of this API can be found in SampleCode.demonstrateSparqlAPI().  Thi
     graph.tx().commit();
 
     /*
-     * "Who created a project named 'lop' that was also created by someone 
+     * "Who created a project named 'lop' that was also created by someone
      * who is 29 years old? Return the two creators."
-     * 
+     *
      * gremlin> g.V().match(
      *        __.as('a').out('created').as('b'),
      *        __.as('b').has('name', 'lop'),
@@ -480,7 +484,7 @@ Sample usage of this API can be found in SampleCode.demonstrateSparqlAPI().  Thi
      * ==>[a:josh, c:marko]
      * ==>[a:peter, c:marko]
      */
-    final String sparql = 
+    final String sparql =
             "select ?a ?c { " +
                  // vertex named "lop"
             "    ?lop <blaze:name> \"lop\" . " +
